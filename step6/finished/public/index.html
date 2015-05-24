@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+    <title>KaunasJS Workshop #1</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; color: white;}
+      form input { border: 0; padding: 10px; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; float: right;}
+      #nickname { width: 9%; }
+      #message { width: 80%; }
+      #messages, #users { list-style-type: none; margin: 0; padding: 0 0 41px 0; }
+      #messages li, #users li { padding: 5px 10px; word-wrap: break-word; }
+      #messages li:nth-child(odd), #users li:nth-child(even) { background: #eee; }
+      #messages { float: left; width: 70%; border-top: solid; }
+      #users { float: right; width: 20%; border-style: dashed; }
+      #rooms { float: left; width: 10%; border-style: dashed; }
+      .room { cursor: pointer; }
+      .active { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>KaunasJS Chat v6.0</h1>
+    <ul id="rooms">
+      <li>Rooms:</li>
+      <li><span class="room active" onclick="changeRoom('global', this);">Global</span></li>
+      <li><span class="room" onclick="changeRoom('kaunasjs', this);">KaunasJS</span></li>
+    </ul>
+    <ul id="messages"></ul>
+    <ul id="users"></ul>
+    <form action="">
+      <input id="nickname" autocomplete="off" placeholder="Nickname"/>
+      <input id="message" autocomplete="off" placeholder="Message"/>
+      <button>Send</button>
+    </form>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<!--<script src="/bower_components/jquery/dist/jquery.min.js"></script>-->
+<script>
+    var socket = io(),
+        message = $('#message'),
+        nickname = $('#nickname'),
+        messages = $('#messages'),
+        users = $('#users');
+
+    function addMessage(data) {
+        messages.append($('<li>').text(data.nickname + ': ' + data.message));
+    }
+
+    $('form').submit(function() {
+        if (!nickname.val() || !message.val()) return false;
+
+        var data = {
+            nickname: nickname.val(),
+            message: message.val()
+        };
+        
+        addMessage(data);
+        socket.emit('chat', data);
+
+        message.val('');
+        return false;
+    });
+
+    nickname.blur(function() {
+        if (!nickname.val()) return false;
+        socket.emit('new user', nickname.val());
+    });
+
+    socket.on('chat', addMessage);
+
+    socket.on('update users', function(data) {
+        users.empty();
+        for (var i in data) {
+            users.append($('<li>').text(data[i]));
+        }
+    });
+
+    socket.on('update history', function(data) {
+        data.forEach(addMessage);
+    });
+
+    function changeRoom(room, element) {
+        if ($(element).hasClass('active')) return;
+        $($('.active')[0]).removeClass('active');
+        $(element).addClass('active');
+        messages.empty();
+        socket.emit('change room', room);
+    }
+</script>
+</html>
