@@ -3,11 +3,12 @@
 var express = require('express'),
     app = express(),
     http = require('http').Server(app),
-    io = require('socket.io')(http);
+    io = require('socket.io')(http),
+    port = 3000;
 
 app.use('/', express.static('public'));
 
-http.listen(3000);
+http.listen(port);
 
 var users = {},
     messages = [];
@@ -15,7 +16,7 @@ var users = {},
 function saveMessage(message) {
     messages.push(message);
     if (messages.length > 21) messages.shift();
-};
+}
 
 io.on('connection', function (socket) {
     console.log('user connected');
@@ -40,3 +41,5 @@ io.on('connection', function (socket) {
         io.emit('update users', users);
     });
 });
+
+console.log('server is running on: http://localhost:'+port)
