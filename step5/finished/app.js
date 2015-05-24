@@ -9,6 +9,7 @@ var express = require('express'),
 app.use('/', express.static('public'));
 
 http.listen(port);
+console.log('Server is running on: http://localhost:' + port);
 
 var users = {},
     messages = [];
@@ -41,5 +42,3 @@ io.on('connection', function (socket) {
         io.emit('update users', users);
     });
 });
-
-console.log('server is running on: http://localhost:'+port)

@@ -10,7 +10,7 @@
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; float: right;}
       #nickname { width: 9%; }
       #message { width: 80%; }
-      #messages, #users { list-style-type: none; margin: 0; padding: 0 0 41px 0; }
+      #messages, #users { list-style-type: none; padding: 0 0 41px 0; }
       #messages li, #users li { padding: 5px 10px; word-wrap: break-word; }
       #messages li:nth-child(odd), #users li:nth-child(even) { background: #eee; }
       #messages { float: left; width: 80%; }
@@ -22,8 +22,8 @@
     <ul id="messages"></ul>
     <ul id="users"></ul>
     <form action="">
-      <input id="nickname" autocomplete="off" placeholder="Nickname"/>
-      <input id="message" autocomplete="off" placeholder="Message"/>
+        <input id="nickname" autocomplete="off" placeholder="Nickname" title="Please enter your nickname" required/>
+        <input id="message" autocomplete="off" placeholder="Message" title="Please add message" required/>
       <button>Send</button>
     </form>
 </body>

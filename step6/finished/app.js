@@ -3,12 +3,14 @@
 var express = require('express'),
     app = express(),
     http = require('http').Server(app),
-    io = require('socket.io')(http);
+    io = require('socket.io')(http),
+    port = 3000;
 
 app.use('/', express.static('public'));
 app.use('/bower_components',  express.static(__dirname + '../../../bower_components'));
 
-http.listen(3000);
+http.listen(port);
+console.log('Server is running on: http://localhost:' + port);
 
 var users = {
         'global': {},
