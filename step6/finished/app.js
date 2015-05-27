@@ -4,7 +4,7 @@ var express = require('express'),
     app = express(),
     http = require('http').Server(app),
     io = require('socket.io')(http),
-    port = 3000;
+    port = process.env.PORT || 3000;
 
 app.use('/', express.static('public'));
 app.use('/bower_components',  express.static(__dirname + '../../../bower_components'));
