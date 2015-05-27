@@ -27,3 +27,5 @@ Add chat history, so when next time you connect to chat you can see the last 20 
 Let's add 2 chat rooms. `Global` and `KaunasJS`. Each room have online users list and 20 message history. The user can be in only one room at a time.
 ### Step 7: Host to [Heroku](https://www.heroku.com/)
 Host final step to Heroku.
+
+[Hosted KaunasJS workshop #1 @Heroku](http://kaunasjs-workshop1.herokuapp.com/)
